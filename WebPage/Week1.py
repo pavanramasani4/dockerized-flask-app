@@ -127,4 +127,4 @@ def logout():
 
 # Run the Flask application
 if __name__ == '__main__':
-    webpage.run(debug=True)  # Run the app in debug mode
+    webpage.run(host='0.0.0.0', port=5000, debug=True)  # Bind to 0.0.0.0 to accept connections from any IP
