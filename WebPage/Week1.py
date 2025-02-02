@@ -70,7 +70,7 @@ def submit_signup():
     return redirect(url_for('signup'))
 
 # Route for login page and handling login form submission
-@webpage.route("/login", methods=["POST", "GET"])  # Added GET method for the login form
+@webpage.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
         # Retrieve form data
@@ -92,8 +92,8 @@ def login():
             return redirect(url_for('homepage'))  # Redirect to homepage on successful login
         else:
             flash("Invalid username or password.", 'error')  # Flash error message
-            return redirect(url_for('login'))  # Redirect to login page on error
-    return render_template('index.html')  # Render login form on GET request
+            return render_template('login.html')  # Render login.html on error
+    return render_template('login.html')  # Render login form on GET request
 
 # Route for displaying all users (for demonstration purposes)
 @webpage.route("/users")
