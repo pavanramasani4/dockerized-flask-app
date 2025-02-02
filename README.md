@@ -1,8 +1,10 @@
-# Dockerized-Flask-App
+Sure! Here's a complete `README.md` file tailored for your Dockerized Flask web application:
+
+# Dockerized Flask Web Application
 
 ## Overview
 
-This project is a Flask web application that allows users to sign up, log in, and manage their sessions. It uses a SQLite database to store user information and implements secure password hashing. The application is Dockerized for easy deployment and consistency across environments.
+This project is a Flask web application that allows users to sign up, log in, and manage their sessions. It uses a SQLite database to store user information and implements secure password hashing. Dockerizing the application ensures consistent deployment across different environments and simplifies the setup process.
 
 ## Project Structure
 
@@ -21,57 +23,204 @@ MyProjectGroup/
 ├── Dockerfile
 ├── requirements.txt
 └── Week1.py
+```
 
-Features
- └── User Registration and Authentication
- └── Session Management with Login and Logout
- └── Secure Password Storage using Hashing
- └── Flash Messages for User Feedback
- └── SQLite Database for User Data
- └── Dockerized for Consistent Deployment
+## Features
 
-Prerequisites
- └── Python 3.9 or higher
- └── Docker (optional, for Dockerized deployment)
+- User Registration and Authentication
+- Session Management with Login and Logout
+- Secure Password Storage using Hashing
+- Flash Messages for User Feedback
+- SQLite Database for User Data
+- Dockerized for Consistent Deployment
 
-Installation
-Follow these steps to set up and run the application locally without Docker.
+## Prerequisites
 
-1. Clone the Repository
+- Docker: Ensure Docker is installed on your system. You can download it from [Docker's official website](https://www.docker.com/get-started).
 
-git clone https://github.com/your-username/my-flask-app.git  ----#Replace "your-username" with your GitHub username.
+## Getting Started
+
+### 1. Clone the Repository
+
+```sh
+git clone https://github.com/your-username/my-flask-app.git
 cd my-flask-app
+```
 
-2. Create and Activate a Virtual Environment
+Replace `your-username` with your GitHub username.
 
-python -m venv venv  #For Windows
-(Or)
-venv\Scripts\activate #For macOS/Linux:
+### 2. Build the Docker Image
 
-source venv/bin/activate
+Build the Docker image using the provided `Dockerfile`.
 
-3. Install Dependencies
-pip install -r requirements.txt
-
-4. Set Up the Database
-The application uses SQLite. The database will be created automatically when you run the app for the first time.
-
-5. Run the Application
-python Week1.py  #The application will start running on http://localhost:5000.
-
-Running the Application 
-Open your web browser and navigate to http://localhost:5000 to access the application.
-
-Docker Deployment
-Deploying the application with Docker ensures consistency across different environments.
-
-1. Build the Docker Image
+```sh
 docker build -t my-flask-app .
+```
 
-2. Run the Docker Container
-docker run -d -p 5000:5000 my-flask-app  #The -d flag runs the container in detached mode.
+### 3. Run the Docker Container
 
-The -p 5000:5000 option maps port 5000 on your local machine to port 5000 in the container.
+Run a container from the image you just built.
 
-3. Access the Application
-Open your web browser and navigate to http://localhost:5000.
+```sh
+docker run -d -p 5000:5000 my-flask-app
+```
+
+- `-d`: Runs the container in detached mode (in the background).
+- `-p 5000:5000`: Maps port 5000 of the host to port 5000 of the container.
+- `my-flask-app`: The name of the image to run.
+
+### 4. Access the Application
+
+Open your web browser and navigate to:
+
+```
+http://localhost:5000
+```
+
+You should see the application's home page.
+
+## Project Details
+
+### Week1.py
+
+This is the main application file containing the Flask routes and application logic.
+
+**Key Routes:**
+
+- `/`: Home page (login form)
+- `/signup`: Sign-up page
+- `/submit_signup`: Handles sign-up form submission
+- `/login`: Handles login form submission
+- `/home`: User's home page after logging in
+- `/logout`: Logs the user out
+
+### Templates
+
+- **index.html**: The login page template.
+- **signup.html**: The sign-up page template.
+- **home.html**: The user's home page template.
+- **user.html**: Displays all users (for demonstration purposes).
+
+### Static Files
+
+- **styles.css**: Contains styling for the login and sign-up pages.
+- **home-styles.css**: Contains styling for the home page.
+
+### Database
+
+- **SQLite**: The application uses SQLite for simplicity. The database file `mydatabase.db` is created automatically.
+
+## Dockerfile
+
+The `Dockerfile` contains the instructions to build the Docker image for the Flask application.
+
+```Dockerfile
+# Use an official Python runtime as the base image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application code into the container
+COPY . .
+
+# Expose the port the app runs on
+EXPOSE 5000
+
+# Define environment variable for Flask
+ENV FLASK_APP=Week1.py
+
+# Run the application
+CMD ["flask", "run", "--host=0.0.0.0"]
+```
+
+## Requirements.txt
+
+Contains the Python dependencies for the application.
+
+```text
+Flask==2.0.2
+Werkzeug==2.0.2
+Jinja2==3.0.2
+itsdangerous==2.0.1
+click==8.0.3
+```
+
+Add any additional dependencies your application requires.
+
+## Logging
+
+Logs from the Flask application can be viewed using:
+
+```sh
+docker logs <container_id>
+```
+
+To get the `<container_id>`, run:
+
+```sh
+docker ps
+```
+
+## Stopping the Application
+
+To stop the running container:
+
+1. List running containers:
+
+   ```sh
+   docker ps
+   ```
+
+2. Stop the container:
+
+   ```sh
+   docker stop <container_id>
+   ```
+
+## Cleaning Up
+
+To remove the Docker image and container:
+
+1. Stop and remove the container:
+
+   ```sh
+   docker stop <container_id>
+   docker rm <container_id>
+   ```
+
+2. Remove the image:
+
+   ```sh
+   docker rmi my-flask-app
+   ```
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+
+   ```sh
+   git checkout -b feature/your-feature-name
+   ```
+
+3. Commit your changes.
+
+   ```sh
+   git commit -am 'Add new feature'
+   ```
+
+4. Push to the branch.
+   
+   ```sh
+   git push origin feature/your-feature-name
+   ```
+5. Open a pull request.
