@@ -43,8 +43,8 @@ MyProjectGroup/
 ### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/your-username/Dockerized-Flask-Appgit
-cd Dockerized-Flask-App
+git clone https://github.com/your-username/dockerized-flask-app.git
+cd dockerized-flask-app
 ```
 
 Replace `your-username` with your GitHub username.
@@ -54,7 +54,7 @@ Replace `your-username` with your GitHub username.
 Build the Docker image using the provided `Dockerfile`.
 
 ```sh
-docker build -t Dockerized-Flask-App.
+docker build -t dockerized-flask-app.
 ```
 
 ### 3. Run the Docker Container
@@ -62,12 +62,12 @@ docker build -t Dockerized-Flask-App.
 Run a container from the image you just built.
 
 ```sh
-docker run -d -p 5000:5000 Dockerized-Flask-App
+docker run -d -p 5000:5000 dockerized-flask-app
 ```
 
 - `-d`: Runs the container in detached mode (in the background).
 - `-p 5000:5000`: Maps port 5000 of the host to port 5000 of the container.
-- `Dockerized-Flask-App`: The name of the image to run.
+- `dockerized-flask-app`: The name of the image to run.
 
 ### 4. Access the Application
 
