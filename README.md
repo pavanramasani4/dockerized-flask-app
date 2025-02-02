@@ -9,7 +9,7 @@ This project is a Flask web application that allows users to sign up, log in, an
 ## Project Structure
 
 ```plaintext
-MyProjectGroup/
+WebPage/
 │
 ├── static/
 │   ├── home-styles.css
