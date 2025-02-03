@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home-styles.css') }}">
+</head>
+<body>
+    <!-- Navigation bar with logout button -->
+    <nav>
+        <div class="container">
+            <div class="nav-right">
+                <form action="{{ url_for('logout') }}" method="post">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <section id="home" class="section">
+            <div class="container">
+                <h1>Hello, Myself</h1>
+                <h2>Pavankalyan Reddy Ramasani</h2>
+                <p>Highly motivated professional with a strong analytical mindset and a proven ability to deliver impactful solutions. With experience in solving complex problems and driving results, I excel in turning challenges into opportunities for growth.</p>
+            </div>
+        </section>
+        <section id="about" class="section">
+            <div class="container">
+                <h3>Education</h3>
+                <div class="education-item">
+                    <h4>Masters in Business Analytics</h4>
+                    <p class="timeline">Jan 2023 - Dec 2024</p>
+                    <p class="timeline-text">Midwestern State University, Wichita Falls, TX | GPA: 3.8/4.0. <br> Focused on data mining, visualization, and statistical analysis using R, SAS, and Python.</p>
+                </div>
+                <div class="education-item">
+                    <h4>Bachelors in Computer Science</h4>
+                    <p class="timeline">May 2017 - Jun 2021</p>
+                    <p class="timeline-text">Anurag Group of Institutions, Hyderabad, India | GPA: 7.67/10.0. <br> Specialized in data structures, web development, and database management.</p>
+                </div>
+            </div>
+        </section>
+        <section id="services" class="section">
+            <div class="container">
+                <h3>My Skills</h3>
+                <p>Python, MySQL, Tableau, Excel, AWS, Microsoft Office 365, Power BI, Jupyter Notebook, RapidMiner</p>
+            </div>
+        </section>
+        <section id="contact" class="section">
+            <div class="container">
+                <h3>Contact Information</h3>
+                <p>pavankalyan.ramasani@gmail.com</p>
+                <p>945-243-0541</p>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>END</p>
+    </footer>
+</body>
+</html>
