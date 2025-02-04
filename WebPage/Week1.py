@@ -9,23 +9,27 @@ app.secret_key = 'your_secret_key'  # Set a random secret key for session manage
 
 # Function to connect to the SQLite database
 def get_db_connection():
-    conn = sqlite3.connect('mydatabase.db')
-    conn.row_factory = sqlite3.Row  # Return rows as dictionaries
-    with conn:  # Use context manager for initial table creation
-        conn.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                first_name TEXT NOT NULL,
-                last_name TEXT NOT NULL,
-                username TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL,
-                session_start TEXT,
-                session_end TEXT
-            )
-        ''')
-        conn.commit()
-    return conn  # Return the same connection object
-
+    try:
+        conn = sqlite3.connect('WebPage/mydatabase.db')
+        conn.row_factory = sqlite3.Row
+        with conn:
+            conn.execute('''
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
+                    username TEXT NOT NULL UNIQUE,
+                    password TEXT NOT NULL,
+                    session_start TEXT,
+                    session_end TEXT
+                )
+            ''')
+            conn.commit()
+            print("Table 'users' created or already exists.")
+        return conn
+    except sqlite3.Error as e:
+        print(f"Database connection error: {e}")
+        
 # Route for the home page
 @app.route("/")
 def home():
