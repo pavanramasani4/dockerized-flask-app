@@ -4,8 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 
 # Initialize Flask application
-webpage = Flask(__name__)
-webpage.secret_key = 'your_secret_key'  # VERY IMPORTANT: Set a random secret key for session management
+app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Set a random secret key for session management
 
 # Function to connect to the SQLite database
 def get_db_connection():
@@ -27,17 +27,17 @@ def get_db_connection():
     return conn  # Return the same connection object
 
 # Route for the home page
-@webpage.route("/")
+@app.route("/")
 def home():
     return render_template('index.html')  # Render index.html template
 
 # Route for the signup page
-@webpage.route("/signup")
+@app.route("/signup")
 def signup():
     return render_template('signup.html')  # Render signup.html template
 
 # Route for handling signup form submission
-@webpage.route("/submit_signup", methods=["POST"])
+@app.route("/submit_signup", methods=["POST"])
 def submit_signup():
     if request.method == 'POST':
         # Retrieve form data
@@ -70,7 +70,7 @@ def submit_signup():
     return redirect(url_for('signup'))
 
 # Route for login page and handling login form submission
-@webpage.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
         # Retrieve form data
@@ -88,7 +88,7 @@ def login():
             with get_db_connection() as conn:
                 conn.execute('UPDATE users SET session_start = ? WHERE username = ?', (session['start_time'], username))
                 conn.commit()
-            
+
             return redirect(url_for('homepage'))  # Redirect to homepage on successful login
         else:
             flash("Invalid username or password.", 'error')  # Flash error message
@@ -96,7 +96,7 @@ def login():
     return render_template('login.html')  # Render login form on GET request
 
 # Route for displaying all users (for demonstration purposes)
-@webpage.route("/users")
+@app.route("/users")
 def display_users():
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not logged in
@@ -105,14 +105,14 @@ def display_users():
     return render_template('users.html', users=users)  # Render users.html template with user data
 
 # Route for the homepage
-@webpage.route("/home")
+@app.route("/home")
 def homepage():
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not logged in
     return render_template('home.html', username=session.get('username'))  # Use .get() to avoid KeyError
 
 # Route for logging out
-@webpage.route("/logout", methods=["POST"])
+@app.route("/logout", methods=["POST"])
 def logout():
     username = session.get('username')
     end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Record session end time
@@ -127,4 +127,4 @@ def logout():
 
 # Run the Flask application
 if __name__ == '__main__':
-    webpage.run(host='0.0.0.0', port=5000, debug=True)  # Bind to 0.0.0.0 to accept connections from any IP
+    app.run(host='0.0.0.0', port=5000, debug=True)  # Bind to 0.0.0.0 to accept connections from any IP
