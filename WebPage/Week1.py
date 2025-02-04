@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
@@ -9,11 +9,11 @@ app.secret_key = 'your_secret_key'  # Set a random secret key for session manage
 
 # Function to connect to the SQLite database
 def get_db_connection():
-    try:
-        conn = sqlite3.connect('WebPage/mydatabase.db')
-        conn.row_factory = sqlite3.Row
-        with conn:
-            conn.execute('''
+    if 'db' not in g:
+        g.db = sqlite3.connect('WebPage/mydatabase.db')
+        g.db.row_factory = sqlite3.Row
+        with g.db:
+            g.db.execute('''
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
@@ -24,12 +24,16 @@ def get_db_connection():
                     session_end TEXT
                 )
             ''')
-            conn.commit()
+            g.db.commit()
             print("Table 'users' created or already exists.")
-        return conn
-    except sqlite3.Error as e:
-        print(f"Database connection error: {e}")
-        
+    return g.db
+
+@app.teardown_appcontext
+def close_db(e=None):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
 # Route for the home page
 @app.route("/")
 def home():
@@ -57,20 +61,20 @@ def submit_signup():
 
         hashed_password = generate_password_hash(create_password)  # Hash the password
 
-        with get_db_connection() as conn:
-            # Check if the username already exists
-            existing_user = conn.execute('SELECT * FROM users WHERE username = ?', (create_username,)).fetchone()
+        conn = get_db_connection()
+        # Check if the username already exists
+        existing_user = conn.execute('SELECT * FROM users WHERE username = ?', (create_username,)).fetchone()
 
-            if existing_user:
-                flash("Username already exists. Please choose a different one.", 'error')
-                return redirect(url_for('signup'))
+        if existing_user:
+            flash("Username already exists. Please choose a different one.", 'error')
+            return redirect(url_for('signup'))
 
-            # Insert new user into the database
-            conn.execute('INSERT INTO users (first_name, last_name, username, password) VALUES (?, ?, ?, ?)',
-                         (first_name, last_name, create_username, hashed_password))
-            conn.commit()
-            flash("Account created successfully! Please log in.", 'success')
-            return redirect(url_for('login'))
+        # Insert new user into the database
+        conn.execute('INSERT INTO users (first_name, last_name, username, password) VALUES (?, ?, ?, ?)',
+                     (first_name, last_name, create_username, hashed_password))
+        conn.commit()
+        flash("Account created successfully! Please log in.", 'success')
+        return redirect(url_for('login'))
     return redirect(url_for('signup'))
 
 # Route for login page and handling login form submission
@@ -81,17 +85,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        with get_db_connection() as conn:
-            user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+        conn = get_db_connection()
+        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
 
         if user and check_password_hash(user['password'], password):
             session['username'] = user['username']  # Store username in session
             session['start_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Record session start time
 
             # Update session_start in database
-            with get_db_connection() as conn:
-                conn.execute('UPDATE users SET session_start = ? WHERE username = ?', (session['start_time'], username))
-                conn.commit()
+            conn.execute('UPDATE users SET session_start = ? WHERE username = ?', (session['start_time'], username))
+            conn.commit()
 
             return redirect(url_for('homepage'))  # Redirect to homepage on successful login
         else:
@@ -104,8 +107,8 @@ def login():
 def display_users():
     if 'username' not in session:
         return redirect(url_for('login'))  # Redirect to login if not logged in
-    with get_db_connection() as conn:
-        users = conn.execute('SELECT * FROM users').fetchall()
+    conn = get_db_connection()
+    users = conn.execute('SELECT * FROM users').fetchall()
     return render_template('users.html', users=users)  # Render users.html template with user data
 
 # Route for the homepage
@@ -122,9 +125,9 @@ def logout():
     end_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Record session end time
 
     # Update session_end in database
-    with get_db_connection() as conn:
-        conn.execute('UPDATE users SET session_end = ? WHERE username = ?', (end_time, username))
-        conn.commit()
+    conn = get_db_connection()
+    conn.execute('UPDATE users SET session_end = ? WHERE username = ?', (end_time, username))
+    conn.commit()
 
     session.pop('username', None)  # Remove username from session
     return redirect(url_for('home'))  # Redirect to home page
