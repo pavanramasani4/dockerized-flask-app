@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 5000
 
 # Define environment variable
-ENV FLASK_APP=WebPage/Week1.py
+ENV FLASK_APP=/app/WebPage/Week1.py
 
 # Run the Flask app
 CMD ["flask", "run", "--host=0.0.0.0"]
