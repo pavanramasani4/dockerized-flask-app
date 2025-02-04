@@ -10,7 +10,7 @@ app.secret_key = 'your_secret_key'  # Set a random secret key for session manage
 # Function to connect to the SQLite database
 def get_db_connection():
     if 'db' not in g:
-        g.db = sqlite3.connect('WebPage/mydatabase.db')
+        g.db = sqlite3.connect('/app/WebPage/mydatabase.db')
         g.db.row_factory = sqlite3.Row
         with g.db:
             g.db.execute('''
