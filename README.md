@@ -21,6 +21,7 @@ WebPage/
 │   ├── signup.html
 │   └── user.html
 ├── Dockerfile
+├── mydatabase.db
 ├── requirements.txt
 └── Week1.py
 ```
