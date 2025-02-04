@@ -9,21 +9,27 @@ This project is a Flask web application that allows users to sign up, log in, an
 ## Project Structure
 
 ```plaintext
-WebPage/
-│
-├── static/
-│   ├── home-styles.css
-│   └── styles.css
-├── templates/
-│   ├── home.html
-│   ├── index.html
-│   ├── login.html
-│   ├── signup.html
-│   └── user.html
-├── Dockerfile
-├── mydatabase.db
-├── requirements.txt
-└── Week1.py
+dockerized-flask-app/
+ │
+ ├──tests/
+ │    ├── __init__.py
+ │    └── test_Web.py
+ │
+ └──WebPage/
+      │
+      ├── static/
+      │   ├── home-styles.css
+      │   └── styles.css
+      ├── templates/
+      │   ├── home.html
+      │   ├── index.html
+      │   ├── login.html
+      │   ├── signup.html
+      │   └── user.html
+      ├── Dockerfile
+      ├── mydatabase.db
+      ├── requirements.txt
+      └── Week1.py
 ```
 
 ## Features
