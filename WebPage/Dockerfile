@@ -20,8 +20,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Set environment variable
+# Set environment variables
 ENV FLASK_APP=Week1.py
+ENV PYTHONPATH=/app
 
 # Set the working directory to /app/WebPage
 WORKDIR /app/WebPage
