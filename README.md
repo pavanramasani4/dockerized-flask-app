@@ -331,11 +331,3 @@ Contributions are welcome! Please follow these steps:
    ```
 
 5. Open a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-Feel free to let me know if you need any further assistance or additional changes! 😊🚀
