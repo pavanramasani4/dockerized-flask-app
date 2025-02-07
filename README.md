@@ -1,3 +1,7 @@
+Sure! Here is your updated `README.md` file:
+
+---
+
 # Dockerized Flask Web Application
 
 ## Overview
@@ -303,6 +307,50 @@ To remove the Docker image and container:
    docker rmi dockerized-flask-app
    ```
 
+## Running Locally Without Docker
+
+### **Prerequisites**
+
+- **Python 3.9+**: Ensure Python is installed on your system.
+
+### **Steps**
+
+#### **1. Create and Activate a Virtual Environment**
+
+```sh
+python3 -m venv myenv
+source myenv/bin/activate  # For Unix/Linux/macOS
+
+# On Windows PowerShell
+.\myenv\Scripts\Activate.ps1
+
+# On Windows Command Prompt
+myenv\Scripts\activate.bat
+```
+
+#### **2. Install Dependencies**
+
+```sh
+pip install -r WebPage/requirements.txt
+```
+
+#### **3. Set Up the Database**
+
+If the database does not already exist, it will be created when you run the application.
+
+#### **4. Run the Application**
+
+```sh
+cd WebPage
+python Week1.py
+```
+
+- Access the application at: `http://localhost:5000`
+
+Sure! Let's continue from where we left off.
+
+---
+
 ## Deploying on AWS EC2
 
 ### **Setup Instructions for AWS EC2**
@@ -329,22 +377,15 @@ To remove the Docker image and container:
 2. Navigate to the directory where your key pair is stored.
 3. Connect to your EC2 instance using SSH:
 
-Of course, let's continue with the instructions for deploying the application on AWS EC2.
-
----
-
-#### **3. Connect to Your EC2 Instance (cont.)**
-
-3. Connect to your EC2 instance using SSH:
-
    ```sh
+   chmod 400 your-key-pair.pem
    ssh -i "your-key-pair.pem" ubuntu@your-ec2-public-dns
    ```
 
    - Replace `your-key-pair.pem` with the name of your key pair file.
    - Replace `your-ec2-public-dns` with the Public DNS of your EC2 instance, which can be found in the EC2 Dashboard.
 
-#### **4. Update and Install Dependencies on the EC2 Instance**
+#### **3. Update and Install Dependencies on the EC2 Instance**
 
 Once connected to your EC2 instance, update the package list and install Docker:
 
@@ -353,7 +394,7 @@ sudo apt-get update
 sudo apt-get install -y docker.io
 ```
 
-#### **5. Clone the Repository on the EC2 Instance**
+#### **4. Clone the Repository on the EC2 Instance**
 
 Clone your project repository on the EC2 instance:
 
@@ -364,7 +405,7 @@ cd dockerized-flask-app
 
 Replace `your-username` with your GitHub username.
 
-#### **6. Build and Run the Docker Image on EC2**
+#### **5. Build and Run the Docker Image on EC2**
 
 Build the Docker image:
 
@@ -378,7 +419,7 @@ Run the Docker container:
 sudo docker run -d -p 5000:5000 dockerized-flask-app
 ```
 
-#### **7. Access the Application**
+#### **6. Access the Application**
 
 Open your web browser and navigate to your EC2 instance's public DNS on port 5000:
 
