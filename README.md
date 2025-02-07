@@ -1,7 +1,3 @@
-Sure! Here's the updated `README.md` file with the latest changes, including instructions on generating and viewing test coverage reports.
-
----
-
 # Dockerized Flask Web Application
 
 ## Overview
@@ -148,7 +144,7 @@ To generate test coverage reports, follow these steps:
    Ensure your `Week1.py` file includes the following route:
 
    ```python
-   @webpage.route('/coverage')
+   @app.route('/coverage')
    def coverage_report():
        return redirect(url_for('static', filename='htmlcov/index.html'))
    ```
@@ -307,6 +303,99 @@ To remove the Docker image and container:
    docker rmi dockerized-flask-app
    ```
 
+## Deploying on AWS EC2
+
+### **Setup Instructions for AWS EC2**
+
+#### **1. Launch an EC2 Instance**
+
+1. Log in to your AWS Management Console.
+2. Navigate to the EC2 Dashboard.
+3. Click on "Launch Instance".
+4. Choose an Amazon Machine Image (AMI) (e.g., Ubuntu Server 20.04 LTS).
+5. Select an Instance Type (e.g., t2.micro for free tier eligibility).
+6. Configure Instance Details and add Storage if needed.
+7. Add Tags (optional).
+8. Configure Security Group:
+   - Allow SSH (port 22) from your IP.
+   - Allow HTTP (port 80) from anywhere.
+   - Allow Custom TCP Rule (port 5000) from anywhere.
+9. Review and Launch the instance.
+10. Download the key pair (.pem file) and keep it secure.
+
+#### **2. Connect to Your EC2 Instance**
+
+1. Open a terminal on your local machine.
+2. Navigate to the directory where your key pair is stored.
+3. Connect to your EC2 instance using SSH:
+
+Of course, let's continue with the instructions for deploying the application on AWS EC2.
+
+---
+
+#### **3. Connect to Your EC2 Instance (cont.)**
+
+3. Connect to your EC2 instance using SSH:
+
+   ```sh
+   ssh -i "your-key-pair.pem" ubuntu@your-ec2-public-dns
+   ```
+
+   - Replace `your-key-pair.pem` with the name of your key pair file.
+   - Replace `your-ec2-public-dns` with the Public DNS of your EC2 instance, which can be found in the EC2 Dashboard.
+
+#### **4. Update and Install Dependencies on the EC2 Instance**
+
+Once connected to your EC2 instance, update the package list and install Docker:
+
+```sh
+sudo apt-get update
+sudo apt-get install -y docker.io
+```
+
+#### **5. Clone the Repository on the EC2 Instance**
+
+Clone your project repository on the EC2 instance:
+
+```sh
+git clone https://github.com/your-username/dockerized-flask-app.git
+cd dockerized-flask-app
+```
+
+Replace `your-username` with your GitHub username.
+
+#### **6. Build and Run the Docker Image on EC2**
+
+Build the Docker image:
+
+```sh
+sudo docker build -t dockerized-flask-app .
+```
+
+Run the Docker container:
+
+```sh
+sudo docker run -d -p 5000:5000 dockerized-flask-app
+```
+
+#### **7. Access the Application**
+
+Open your web browser and navigate to your EC2 instance's public DNS on port 5000:
+
+```
+http://your-ec2-public-dns:5000
+```
+
+You should see the application's home page.
+
+### Notes
+
+- **Ensure Security Group Rules**: Verify that the security group associated with your EC2 instance allows inbound traffic on port 5000 (as configured during instance launch).
+- **Persistence of Data**: Since SQLite is used, data will be stored in the container. Consider using a persistent storage solution for production environments.
+- **Automating Deployment**: For automated deployments, consider using AWS services like CodeDeploy or third-party tools like GitHub Actions or Jenkins.
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please follow these steps:
@@ -331,3 +420,5 @@ Contributions are welcome! Please follow these steps:
    ```
 
 5. Open a pull request.
+
+---
