@@ -1,13 +1,9 @@
-Sure! Here is your updated `README.md` file:
-
----
-
 # Dockerized Flask Web Application
-
+---
 ## Overview
 
 This project is a Flask web application that allows users to sign up, log in, and manage their sessions. It uses a SQLite database to store user information and implements secure password hashing. Dockerizing the application ensures consistent deployment across different environments and simplifies the setup process.
-
+---
 ## Project Structure
 
 ```
