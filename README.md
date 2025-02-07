@@ -1,9 +1,10 @@
+
 # Dockerized Flask Web Application
 ---
 ## Overview
 
 This project is a Flask web application that allows users to sign up, log in, and manage their sessions. It uses a SQLite database to store user information and implements secure password hashing. Dockerizing the application ensures consistent deployment across different environments and simplifies the setup process.
----
+
 ## Project Structure
 
 ```
@@ -341,10 +342,8 @@ cd WebPage
 python Week1.py
 ```
 
-- Access the application at: `http://localhost:5000`
-
-Sure! Let's continue from where we left off.
-
+- To Access the application Open: `http://localhost:5000`
+- 
 ---
 
 ## Deploying on AWS EC2
@@ -425,6 +424,115 @@ http://your-ec2-public-dns:5000
 
 You should see the application's home page.
 
+### Additional Steps
+
+#### **Run Terminal as Admin**
+
+```sh
+cd C:\Pavan\JYPNB\WebPage
+
+PS C:\Pavan\JYPNB\WebPage> ssh -i "myFlaskAppKey.pem" ubuntu@18.220.37.79
+```
+
+#### **Directory and Environment Setup**
+
+```sh
+cd ~/
+
+rm -rf dockerized-flask-app  # if it already exists in the path
+
+git clone https://github.com/pavanramasani4/dockerized-flask-app.git
+
+cd ~/dockerized-flask-app/WebPage
+
+python3 -m venv myenv
+
+source myenv/bin/activate  # (or) myenv\Scripts\activate
+
+pip install Flask
+
+pip install -r requirements.txt
+```
+
+#### **Build and Run the Docker Image**
+
+```sh
+docker build -t webpage-flask-app .
+
+docker run -d -p 5000:5000 webpage-flask-app
+
+docker ps  # Verify container is running
+
+docker logs <Container ID>  # Check logs if container fails
+```
+
+#### **Access the Website**
+
+```
+http://your-ec2-ip-address:5000
+```
+
+*My Instance Public IP is "18.220.37.79"*
+
+#### **Checking the Database**
+
+```sh
+docker exec -it <Container ID> /bin/bash
+# Shell inside docker #root @ <Container ID>
+
+apt-get update
+
+apt-get install sqlite3
+
+sqlite3 /app/WebPage/mydatabase.db
+
+SELECT * FROM users;
+
+# To exit from SQLite shell
+press Ctrl + D
+
+# To exit from docker shell
+exit
+```
+
+#### **Deactivate Virtual Environment**
+
+```sh
+deactivate
+```
+
+#### **Create a New Virtual Environment**
+
+```sh
+python3 -m venv myenv
+
+source myenv/bin/activate
+```
+
+#### **Install `requirements.txt`**
+
+```sh
+pip install Flask gunicorn werkzeug datetime unittest2
+```
+
+#### **Running Unit Tests**
+
+```sh
+cd ~/dockerized-flask-app
+
+python3 -m unittest discover -s tests
+```
+
+#### **For Generating Report**
+
+On Local Machine:
+
+```sh
+coverage run -m unittest discover -s tests
+
+coverage html
+```
+
 ### Notes
 
 - **Ensure Security Group Rules**: Verify that the security group associated with your EC2 instance allows inbound traffic on port 5000 (as configured during instance launch).
@@ -457,5 +565,4 @@ Contributions are welcome! Please follow these steps:
    ```
 
 5. Open a pull request.
-
 ---
