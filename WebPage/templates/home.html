@@ -14,6 +14,9 @@
                 <form action="{{ url_for('logout') }}" method="post">
                     <button type="submit" class="logout-btn">Logout</button>
                 </form>
+                <form action="{{ url_for('coverage_report') }}" method="get" class="form-container">
+                    <button class="coverage-btn" type="submit">Coverage Report</button>
+                </form>
             </div>
         </div>
     </nav>
